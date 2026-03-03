@@ -11,9 +11,14 @@ import {
 } from "@chatscope/chat-ui-kit-react";
 import { useSurvey } from "../../surveyIDContext";
 
-// API URLs (only backend, no API_KEY here)
-const API_URL = `${import.meta.env.VITE_NODE_API}/api/chatbotmessages`;
-const OPENAI_PROXY_URL = `${import.meta.env.VITE_NODE_API}/api/openai`;
+// API URLs (calculated robustly)
+const getApiBase = () => {
+  const envUrl = import.meta.env.VITE_NODE_API || "";
+  return envUrl.endsWith('/') ? envUrl.slice(0, -1) : envUrl;
+};
+
+const API_URL = `${getApiBase()}/api/chatbotmessages`;
+const OPENAI_PROXY_URL = `${getApiBase()}/api/openai`;
 
 // system prompts
 const hallucinationConfigs = {

@@ -94,8 +94,14 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
     // Phase 3 Final Submission
     setIsSubmitting(true);
     try {
-      let NODE_api = `${import.meta.env.VITE_NODE_API}/api/AUT_gpt`;
-      const response = await fetch(NODE_api, {
+      const apiUrlEnv = import.meta.env.VITE_NODE_API;
+      if (!apiUrlEnv) {
+        throw new Error("VITE_NODE_API is not defined");
+      }
+      const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+      const fullUrl = `${baseApi}/api/AUT_gpt`;
+
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

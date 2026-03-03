@@ -120,7 +120,14 @@ function AUT() {
     // Phase 3 Final Submission
     setIsSubmitting(true);
     try {
-      const response = await fetch(`${import.meta.env.VITE_NODE_API}/api/AUT`, {
+      const apiUrlEnv = import.meta.env.VITE_NODE_API;
+      if (!apiUrlEnv) {
+        throw new Error("VITE_NODE_API is not defined");
+      }
+      const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+      const fullUrl = `${baseApi}/api/AUT`;
+
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
