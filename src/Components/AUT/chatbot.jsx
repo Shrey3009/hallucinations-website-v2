@@ -66,9 +66,12 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
 
   // Auto-scroll to bottom
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    const scrollTimeout = setTimeout(() => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+      }
+    }, 100); // 100ms delay to allow DOM to finish rendering large messages
+    return () => clearTimeout(scrollTimeout);
   }, [messages, isTyping]);
 
   useEffect(() => {
@@ -233,9 +236,9 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
     >
       <div className={styles.chatHeader}>ChatGPT</div>
 
-      <div style={{ flex: 1, position: "relative", minHeight: "400px" }}>
-        <MainContainer style={{ border: "none", background: "transparent" }}>
-          <ChatContainer style={{ background: "transparent" }}>
+      <div style={{ flex: 1, position: "relative", minHeight: "400px", overflow: "hidden" }}>
+        <MainContainer style={{ border: "none", background: "transparent", height: "100%" }}>
+          <ChatContainer style={{ background: "transparent", height: "100%" }}>
             <MessageList
               style={{ background: "transparent" }}
               typingIndicator={
@@ -249,27 +252,28 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
               ))}
               <div ref={scrollRef} style={{ height: "1px" }} />
             </MessageList>
+
+            <div className={styles.inputWrapper} slot="message-input">
+              <MessageInput
+                placeholder="Type your message..."
+                onSend={handleSend}
+                attachButton={false}
+                style={{ flexGrow: 1 }}
+              />
+              {task >= 2 && task <= 4 && round === 1 && (
+                <div className={styles.promptLimitNote}>
+                  Only 1 prompt allowed ⚠️
+                </div>
+              )}
+              {task >= 2 && task <= 4 && round === 2 && (
+                <div className={styles.promptLimitNote}>
+                  <div>Only 3 prompts allowed ⚠️</div>
+                  <div>Modify or build on previously generated ideas.</div>
+                </div>
+              )}
+            </div>
           </ChatContainer>
         </MainContainer>
-      </div>
-
-      <div className={styles.inputWrapper}>
-        <MessageInput
-          placeholder="Type your message..."
-          onSend={handleSend}
-          attachButton={false}
-        />
-        {task >= 2 && task <= 4 && round === 1 && (
-          <div className={styles.promptLimitNote}>
-            Only 1 prompt allowed ⚠️
-          </div>
-        )}
-        {task >= 2 && task <= 4 && round === 2 && (
-          <div className={styles.promptLimitNote}>
-            <div>Only 3 prompts allowed ⚠️</div>
-            <div>Modify or build on previously generated ideas.</div>
-          </div>
-        )}
       </div>
     </div>
   );
