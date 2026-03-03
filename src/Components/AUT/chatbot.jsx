@@ -77,7 +77,14 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
     }
   }, [resetToggle, onReset]);
 
-  const handleSend = async (message) => {
+  const handleSend = async (innerHtml) => {
+    // 1. Strip all HTML to ensure only plain text is sent
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = innerHtml;
+    const message = (tempDiv.textContent || tempDiv.innerText || "").trim();
+
+    if (!message) return;
+
     if (task >= 2 && task <= 4) {
       if (round === 1 && promptCount >= 1) {
         alert("Only 1 prompt allowed");
@@ -207,7 +214,15 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
   }
 
   return (
-    <div className={styles.chatbot}>
+    <div
+      className={styles.chatbot}
+      onPaste={(e) => {
+        // Intercept paste to force plain text
+        e.preventDefault();
+        const text = e.clipboardData.getData("text/plain");
+        document.execCommand("insertText", false, text);
+      }}
+    >
       <div className={styles.chatHeader}>ChatGPT</div>
 
       <div style={{ flex: 1, position: "relative", minHeight: "400px" }}>
