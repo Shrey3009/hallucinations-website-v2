@@ -236,7 +236,7 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
     >
       <div className={styles.chatHeader}>ChatGPT</div>
 
-      <div style={{ flex: 1, position: "relative", minHeight: "400px", overflow: "hidden" }}>
+      <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
         <MainContainer style={{ border: "none", background: "transparent", height: "100%" }}>
           <ChatContainer style={{ background: "transparent", height: "100%" }}>
             <MessageList
@@ -252,28 +252,28 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
               ))}
               <div ref={scrollRef} style={{ height: "1px" }} />
             </MessageList>
-
-            <div className={styles.inputWrapper} slot="message-input">
-              <MessageInput
-                placeholder="Type your message..."
-                onSend={handleSend}
-                attachButton={false}
-                style={{ flexGrow: 1 }}
-              />
-              {task >= 2 && task <= 4 && round === 1 && (
-                <div className={styles.promptLimitNote}>
-                  Only 1 prompt allowed ⚠️
-                </div>
-              )}
-              {task >= 2 && task <= 4 && round === 2 && (
-                <div className={styles.promptLimitNote}>
-                  <div>Only 3 prompts allowed ⚠️</div>
-                  <div>Modify or build on previously generated ideas.</div>
-                </div>
-              )}
-            </div>
           </ChatContainer>
         </MainContainer>
+      </div>
+
+      <div className={styles.inputWrapper}>
+        <MessageInput
+          placeholder="Type your message..."
+          onSend={handleSend}
+          attachButton={false}
+          style={{ flexGrow: 1 }}
+        />
+        {task >= 2 && task <= 4 && round === 1 && (
+          <div className={styles.promptLimitNote}>
+            Only 1 prompt allowed ⚠️
+          </div>
+        )}
+        {task >= 2 && task <= 4 && round === 2 && (
+          <div className={styles.promptLimitNote}>
+            <div>Only 3 prompts allowed ⚠️</div>
+            <div>Modify or build on previously generated ideas.</div>
+          </div>
+        )}
       </div>
     </div>
   );
