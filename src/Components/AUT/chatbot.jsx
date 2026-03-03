@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./chatbot.module.css";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import {
@@ -62,6 +62,14 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [promptCount, setPromptCount] = useState(0);
+  const scrollRef = useRef(null);
+
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isTyping]);
 
   useEffect(() => {
     if (resetToggle) {
@@ -239,6 +247,7 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
               {messages.map((msg, i) => (
                 <Message key={i} model={msg} />
               ))}
+              <div ref={scrollRef} style={{ height: "1px" }} />
             </MessageList>
           </ChatContainer>
         </MainContainer>
