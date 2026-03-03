@@ -95,8 +95,7 @@ function SurveyForm() {
 
       // Assign patents to the user after successful PreSurvey submission
       try {
-        const patentApiUrl = `${import.meta.env.VITE_NODE_API
-          }/api/patent-assignment`;
+        const patentApiUrl = `${baseApi}/api/patent-assignment`;
         console.log(`Attempting to assign patents via: ${patentApiUrl}`);
 
         const patentResponse = await fetch(patentApiUrl, {
