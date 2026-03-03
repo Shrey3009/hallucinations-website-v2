@@ -22,30 +22,13 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
     window.scrollTo(0, 0);
   }, [phase, onStateChange]);
 
-  // Fetch patent for the current task
+  // Sync patent from props (provided by AUT_gpt)
   useEffect(() => {
-    if (surveyId && task) {
-      fetchPatentForTask();
-    } else if (randomString) {
+    if (randomString) {
+      console.log("Patent received from props:", randomString);
       setCurrentPatent(randomString);
     }
-  }, [surveyId, task, randomString]);
-
-  const fetchPatentForTask = async () => {
-    try {
-      const apiUrl = `${import.meta.env.VITE_NODE_API}/api/patent-for-task/${surveyId}/${task}`;
-      const response = await fetch(apiUrl);
-
-      if (response.ok) {
-        const patentData = await response.json();
-        setCurrentPatent(patentData.data);
-      } else {
-        console.error(`API failed with status: ${response.status}`);
-      }
-    } catch (error) {
-      console.error("Failed to fetch patent:", error.message);
-    }
-  };
+  }, [randomString]);
 
   useEffect(() => {
     if (timeLeft === 0) {

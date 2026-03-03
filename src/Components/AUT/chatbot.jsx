@@ -176,18 +176,18 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
       const bodyData =
         task === 1
           ? {
-              preSurveyId: surveyId,
-              task,
-              round: null,
-              chatMessages: sanitizedChats,
-            }
+            preSurveyId: surveyId,
+            task,
+            round: null,
+            chatMessages: sanitizedChats,
+          }
           : {
-              preSurveyId: surveyId,
-              task,
-              round,
-              level,
-              chatMessages: sanitizedChats,
-            };
+            preSurveyId: surveyId,
+            task,
+            round,
+            level,
+            chatMessages: sanitizedChats,
+          };
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -211,21 +211,24 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
     <div className={styles.chatbot}>
       <div className={styles.chatHeader}>ChatGPT</div>
 
-      <MainContainer style={{ height: "600px" }}>
-        <ChatContainer>
-          <MessageList
-            typingIndicator={
-              isTyping ? (
-                <TypingIndicator content="ChatGPT is typing..." />
-              ) : null
-            }
-          >
-            {messages.map((msg, i) => (
-              <Message key={i} model={msg} />
-            ))}
-          </MessageList>
-        </ChatContainer>
-      </MainContainer>
+      <div style={{ flex: 1, position: "relative", minHeight: "400px" }}>
+        <MainContainer style={{ border: "none", background: "transparent" }}>
+          <ChatContainer style={{ background: "transparent" }}>
+            <MessageList
+              style={{ background: "transparent" }}
+              typingIndicator={
+                isTyping ? (
+                  <TypingIndicator content="ChatGPT is typing..." />
+                ) : null
+              }
+            >
+              {messages.map((msg, i) => (
+                <Message key={i} model={msg} />
+              ))}
+            </MessageList>
+          </ChatContainer>
+        </MainContainer>
+      </div>
 
       <div className={styles.inputWrapper}>
         <MessageInput

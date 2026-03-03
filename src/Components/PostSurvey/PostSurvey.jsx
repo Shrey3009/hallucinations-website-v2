@@ -69,17 +69,23 @@ function PostSurvey() {
       );
       console.log("surveyId from context:", surveyId);
 
-      const response = await fetch(
-        `${import.meta.env.VITE_NODE_API}/api/PostSurvey`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...formData,
-            preSurveyId: surveyId,
-          }),
-        }
-      );
+      const apiUrlEnv = import.meta.env.VITE_NODE_API;
+      if (!apiUrlEnv) {
+        console.error("VITE_NODE_API is not defined in environment variables");
+        return;
+      }
+
+      const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+      const apiUrl = `${baseApi}/api/PostSurvey`;
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          preSurveyId: surveyId,
+        }),
+      });
 
       const data = await response.json();
       if (!response.ok) {

@@ -33,7 +33,14 @@ function AUT() {
   const fetchPatentForTask = async () => {
     try {
       const taskNum = currentTaskIndex + 1;
-      const apiUrl = `${import.meta.env.VITE_NODE_API}/api/patent-for-task/${surveyId}/${taskNum}`;
+      const apiUrlEnv = import.meta.env.VITE_NODE_API;
+      if (!apiUrlEnv) {
+        console.error("VITE_NODE_API is not defined in environment variables");
+        return;
+      }
+
+      const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+      const apiUrl = `${baseApi}/api/patent-for-task/${surveyId}/${taskNum}`;
       console.log(`Attempting to fetch patent from: ${apiUrl}`);
 
       const response = await fetch(apiUrl);

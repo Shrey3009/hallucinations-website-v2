@@ -46,14 +46,20 @@ function AUT_gpt() {
         return;
       }
 
-      const apiUrl = `${import.meta.env.VITE_NODE_API}/api/patent-for-task/${surveyId}/${task}`;
+      const apiUrlEnv = import.meta.env.VITE_NODE_API;
+      if (!apiUrlEnv) {
+        console.error("VITE_NODE_API is not defined in environment variables");
+        return;
+      }
+
+      const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+      const apiUrl = `${baseApi}/api/patent-for-task/${surveyId}/${task}`;
       console.log(`Fetching patent from: ${apiUrl}`);
 
       const response = await fetch(apiUrl);
       if (response.ok) {
         const patentData = await response.json();
         setRandomString(patentData.data);
-
         console.log(`Patent fetched for Task ${task}:`, patentData.data);
 
         if (patentData.level) {
