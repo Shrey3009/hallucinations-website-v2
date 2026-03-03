@@ -100,12 +100,6 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
   };
 
   async function processMessageToChatGPT(chatMessages) {
-    if (task === 1) {
-      console.log("Task 1: no GPT call required");
-      setIsTyping(false);
-      return;
-    }
-
     if (!level) {
       console.warn("Level not ready yet, skipping GPT call");
       setIsTyping(false);
