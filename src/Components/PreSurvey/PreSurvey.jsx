@@ -50,27 +50,35 @@ function SurveyForm() {
     console.log("Submitting form data:", formData);
 
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_NODE_API}/api/PreSurvey`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const apiUrl = import.meta.env.VITE_NODE_API;
+      console.log(`Initial API URL from env: "${apiUrl}"`);
 
-      const responseData = await response.json();
+      if (!apiUrl) {
+        throw new Error("VITE_NODE_API is not defined in environment variables. Check your Vercel/Env settings.");
+      }
 
-      console.log("Full PreSurvey response:", responseData);
+      // Ensure no double slashes if user included trailing slash
+      const baseApi = apiUrl.endsWith('/') ? apiUrl.slice(0, -1) : apiUrl;
+      const fullUrl = `${baseApi}/api/PreSurvey`;
 
+      console.log(`Fetching from: ${fullUrl}`);
+
+      const response = await fetch(fullUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      let responseData;
       if (!response.ok) {
+        responseData = await response.json().catch(() => ({}));
+        console.error("Server error response:", responseData);
+
         if (responseData.errors) {
-          // Handle validation errors
           const newErrors = {};
           responseData.errors.forEach((error) => {
-            // Extract field name from error message
             const field = error.toLowerCase().split(" ")[0];
             newErrors[field] = error;
           });
@@ -80,6 +88,7 @@ function SurveyForm() {
         throw new Error(responseData.message || "Failed to submit form");
       }
 
+      responseData = await response.json();
       console.log("Form submitted successfully:", responseData);
       setSurveyId(responseData._id);   // ✅ store only surveyId
       setCurrentTaskIndex(0);          // ✅ Always start at Task 1
