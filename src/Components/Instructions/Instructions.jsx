@@ -1,68 +1,61 @@
 import React from "react";
 import styles from "./Instructions.module.css";
 
-function Instructions({ round, task }) {
+function Instructions({ round: phase, isAI }) {
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Instructions for Round {round}</h2>
-      <div className={styles.taskNumber}>Task {task}</div>
+      <h2 className={styles.title}>Phase {phase} Instructions</h2>
 
       <div className={styles.instructionCard}>
-        {round === 1 && (
+        {phase === 1 && (
           <>
-            <h3 className={styles.subtitle}>Initial Interaction</h3>
+            <h3 className={styles.subtitle}>Initial Ideation</h3>
             <p className={styles.text}>
-              Please follow the correct format when interacting with the AI: You
-              are allowed to submit only one prompt to the AI in this round.
+              In this phase, you are asked to explore the patented technology and generate as many distinct real-world applications as possible. Focus on generating a diverse set of ideas.
             </p>
-            <p className={styles.text}>
-              In your prompt, you may request up to 3 applications of the
-              provided patent - no more.
-            </p>
-            <div className={styles.examples}>
-              <div className={styles.example}>
-                <h4>✅ Allowed Example:</h4>
-                <p>"Please give me 3 applications of this patent."</p>
-              </div>
-              <div className={styles.example}>
-                <h4>❌ Not Allowed:</h4>
-                <p>"Please give me 5 applications of this patent."</p>
-              </div>
-            </div>
+            {isAI && (
+              <p className={styles.text}>
+                Feel free to ask the AI for inspiration, technical clarifications, or to brainstorm potential use cases.
+              </p>
+            )}
             <p className={styles.note}>
-              After receiving the AI's response, write down your answers. Your
-              list can include both your original ideas and the AI's
-              suggestions.
+              Please enter your generated ideas into the list.
             </p>
           </>
         )}
 
-        {round === 2 && (
+        {phase === 2 && (
           <>
-            <h3 className={styles.subtitle}>Building on Previous Ideas</h3>
+            <h3 className={styles.subtitle}>Selection Phase</h3>
             <p className={styles.text}>
-              You cannot introduce new questions or topics. Your prompt must
-              build on the AI's response from Round 1.
+              Review the ideas you generated. Select the one you believe has the highest potential as a real-world application.
             </p>
+          </>
+        )}
+
+        {phase === 3 && (
+          <>
+            <h3 className={styles.subtitle}>Refinement</h3>
+            <p className={styles.text}>
+              Develop the selected idea into a clear and well-defined product solution. Describe what the product is, how it works, and how it uses the patented technology to create value.
+            </p>
+            {isAI && (
+              <p className={styles.text}>
+                You may use the AI assistant to help you with the details.
+              </p>
+            )}
             <div className={styles.options}>
               <div className={styles.option}>
-                <h4>🔨 Build upon:</h4>
-                <p>Add details or further develop the ideas from Round 1.</p>
+                <h4>🔨 Elaborate:</h4>
+                <p>Define the key features and target users.</p>
               </div>
               <div className={styles.option}>
                 <h4>✨ Refine:</h4>
-                <p>
-                  Modify or improve suggestions to make them clearer, more
-                  specific, or more unique.
-                </p>
-              </div>
-              <div className={styles.option}>
-                <h4>🌱 Expand:</h4>
-                <p>Think of additional uses inspired by the initial output.</p>
+                <p>Improve the value proposition based on the technology's strengths.</p>
               </div>
             </div>
             <p className={styles.note}>
-              Write down your additional answers in the Round 2 section.
+              Submit your final refined product concept when you are finished.
             </p>
           </>
         )}

@@ -8,13 +8,13 @@ import { useData } from "../../dataContext";
 import { useSurvey } from "../../surveyIDContext";
 
 function AUT_gpt() {
+  const { surveyId, currentTaskIndex } = useSurvey();
   const [round, setRound] = useState(1);
-  const [task, setTask] = useState(2);
+  const [task, setTask] = useState(currentTaskIndex + 1);
   const [temperature, setTemperature] = useState();
   const [resetToggle, setResetToggle] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { surveyId } = useSurvey();
 
   const { data } = useData();
   const [objectArray] = useState(data);
@@ -56,7 +56,7 @@ function AUT_gpt() {
 
         console.log(`Patent fetched for Task ${task}:`, patentData.data);
 
-        if (task >= 2 && task <= 4) {
+        if (patentData.level) {
           const levelFromBackend = patentData.level;
           setLevel(levelFromBackend);
 
@@ -78,27 +78,9 @@ function AUT_gpt() {
     }
   };
 
-  useEffect(() => {
-    if (task === 2 && round === 3) {
-      console.log("Task 2 completed!");
-      navigate("/AttentionTest2");
-    }
-    if (task === 3 && round === 3) {
-      console.log("Task 3 completed!");
-      navigate("/AttentionTest3");
-    }
-    if (task === 4 && round === 3) {
-      console.log("Task 4 completed!");
-      navigate("/PostSurvey");
-    }
-    if (task === 1) {
-      console.log("Task 1 active – no GPT rounds");
-    }
-  }, [round, task, navigate]);
-
   return (
     <div className={styles.main}>
-      <Instructions className={styles.instructions} round={round} task={task} />
+      <Instructions round={round} isAI={true} />
       <div className={styles.bottom_container}>
         <div className={styles.aut_component}>
           <AUT_
@@ -109,15 +91,17 @@ function AUT_gpt() {
             temperature={temperature}
           />
         </div>
-        <div className={styles.chat}>
-          <Chatbot
-            task={task}
-            round={task === 1 ? null : round}
-            resetToggle={resetToggle}
-            onReset={() => setResetToggle(false)}
-            level={level}
-          />
-        </div>
+        {round !== 2 && (
+          <div className={styles.chat}>
+            <Chatbot
+              task={task}
+              round={task === 1 ? null : round}
+              resetToggle={resetToggle}
+              onReset={() => setResetToggle(false)}
+              level={level}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

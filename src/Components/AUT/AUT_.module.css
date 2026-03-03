@@ -1,118 +1,90 @@
-/* UseCaseForm.module.css */
-.pageContainer {
-  min-height: 100vh;
-  background-color: #f8f9fa;
-  padding: 2rem 1rem;
-}
-
 .container {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 1.5rem;
+  background-color: transparent;
+  font-family: var(--font-primary);
+  height: 100%;
+  overflow-y: auto;
 }
 
 .taskHeader {
   text-align: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
 }
 
 .taskTitle {
-  font-size: 2.5rem;
-  color: #2c3e50;
+  font-size: 2rem;
+  color: #1a202c;
+  margin-bottom: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.patentSection {
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: left;
+  border-left: 6px solid #3182ce;
   margin-bottom: 1.5rem;
-  font-weight: 700;
-  font-family: var(--font-primary);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.patentName {
+  font-size: 1.4rem;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.patentDescription h3 {
+  font-size: 1rem;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.patentDescription p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
 }
 
 .taskDescription {
-  font-size: 1.2rem;
-  color: #6c757d;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  font-family: var(--font-primary);
-}
-
-.objectCard {
-  background-color: #4a90e2;
-  color: white;
-  padding: 2rem;
+  font-size: 1rem;
+  color: #555e66;
+  line-height: 1.5;
+  margin: 1.25rem 0;
+  padding: 0.875rem;
+  background: #eef6ff;
   border-radius: 8px;
-  margin: 0 auto;
-  max-width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease;
+  font-style: italic;
 }
 
-.objectCard:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.objectName {
-  font-size: 1.75rem;
-  font-weight: 600;
-  margin: 0;
-  text-align: center;
-  font-family: var(--font-primary);
+.timer {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #dc3545;
+  margin: 0.75rem 0;
 }
 
 .useCaseForm {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 3rem;
-}
-
-.useCaseGroup {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  background-color: #f8f9fa;
-  padding: 1.25rem;
-  border-radius: 8px;
-  border: 1px solid #dee2e6;
-  transition: all 0.2s ease;
-}
-
-.useCaseGroup:hover {
-  border-color: #4a90e2;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-.useCaseNumber {
-  background-color: #4a90e2;
-  color: white;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  flex-shrink: 0;
-  font-size: 1.1rem;
-  font-family: var(--font-primary);
-}
-
-.inputGroup {
-  flex-grow: 1;
-  display: flex;
   gap: 1rem;
 }
 
 .inputField {
-  flex: 1;
-  padding: 0.875rem 1rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
   border: 1px solid #dee2e6;
   border-radius: 6px;
   font-size: 1rem;
-  background-color: white;
-  color: #2c3e50;
+  font-family: inherit;
   transition: all 0.2s ease;
-  font-family: var(--font-primary);
 }
 
 .inputField:focus {
@@ -121,22 +93,10 @@
   box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
-.inputField::placeholder {
-  color: #adb5bd;
-  opacity: 0.8;
-}
-
-.timer {
-  text-align: center;
-  margin: 1rem 0;
-  font-size: 1.2rem;
-  color: #2c3e50;
-  font-family: var(--font-primary);
-}
-
-.submitContainer {
-  margin-top: 3rem;
-  text-align: center;
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
 .submitButton {
@@ -144,126 +104,30 @@
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 1rem 3rem;
-  font-size: 1.1rem;
+  padding: 0.875rem 2.5rem;
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  font-family: var(--font-primary);
 }
 
 .submitButton:hover {
   background-color: #357abd;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.submitButton:active {
-  transform: translateY(0);
-  box-shadow: none;
 }
 
 .submitButton:disabled {
-  background-color: #e9ecef;
-  color: #adb5bd;
+  background-color: #ccc;
   cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
 }
 
-.buttonContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 2rem;
-  align-items: center;
-}
-
-.addButton {
-  background-color: #f8f9fa;
-  color: #4a90e2;
-  border: 2px solid #4a90e2;
-  border-radius: 8px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-family: var(--font-primary);
-}
-
-.addButton:hover {
-  background-color: #4a90e2;
-  color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.addButton:active {
-  transform: translateY(0);
-  box-shadow: none;
+.errorMessage {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.4rem;
 }
 
 @media (max-width: 768px) {
-  .pageContainer {
-    padding: 1rem;
-  }
-
   .container {
-    padding: 1.5rem;
-    margin: 1rem;
-  }
-
-  .taskTitle {
-    font-size: 2rem;
-  }
-
-  .taskDescription {
-    font-size: 1.1rem;
-  }
-
-  .objectCard {
-    padding: 1.5rem;
-  }
-
-  .objectName {
-    font-size: 1.5rem;
-  }
-
-  .useCaseGroup {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1rem;
-  }
-
-  .inputGroup {
-    flex-direction: column;
-    width: 100%;
-    gap: 0.75rem;
-  }
-
-  .useCaseNumber {
-    margin-bottom: 0.5rem;
-  }
-
-  .submitButton {
-    width: 100%;
     padding: 1rem;
   }
 }
-
-  .patentDescription {
-    margin-top: 1rem;
-    text-align: left;
-  }
-
-  .patentDescription p {
-    font-size: 1.2rem;   /* bump size */
-    line-height: 1.6;
-  }
-
-  .patentDescription h3 {
-    font-size: 1.4rem;   /* bigger heading */
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }

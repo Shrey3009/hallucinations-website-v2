@@ -19,7 +19,8 @@ function PostSurvey() {
   const navigate = useNavigate();
   const { surveyId } = useSurvey();
 
-   useEffect(() => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
     console.log("PostSurvey mounted, surveyId =", surveyId);
     if (!surveyId) {
       console.warn("⚠️ surveyId is missing! The PostSurvey cannot be linked to PreSurvey.");
@@ -55,18 +56,18 @@ function PostSurvey() {
         }
       }
 
-        console.log(
-  "Final PostSurvey payload:",
-  JSON.stringify(
-    {
-      ...formData,
-      preSurveyId: surveyId,
-    },
-    null,
-    2
-  )
-);
-    console.log("surveyId from context:", surveyId);
+      console.log(
+        "Final PostSurvey payload:",
+        JSON.stringify(
+          {
+            ...formData,
+            preSurveyId: surveyId,
+          },
+          null,
+          2
+        )
+      );
+      console.log("surveyId from context:", surveyId);
 
       const response = await fetch(
         `${import.meta.env.VITE_NODE_API}/api/PostSurvey`,
@@ -93,8 +94,8 @@ function PostSurvey() {
   };
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.container}>
+    <div className={styles.instructionPage}>
+      <div className={styles.card}>
         <div className={styles.header}>
           <h1 className={styles.title}>Post-Task Survey</h1>
           <p className={styles.description}>
@@ -103,162 +104,162 @@ function PostSurvey() {
         </div>
 
         <form onSubmit={handleSubmit} className={styles.form}>
-      {/* Q1 Accuracy */}
-<div className={styles.questionGroup}>
-  <h2 className={styles.questionTitle}>1. How accurate or reasonable did you find the AI’s suggestions overall?
+          {/* Q1 Accuracy */}
+          <div className={styles.questionGroup}>
+            <h2 className={styles.questionTitle}>1. How accurate or reasonable did you find the AI’s suggestions overall?
 
-</h2>
+            </h2>
 
-  <div className={styles.radioGroup}>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="accuracy"
-        value="mostly-incorrect"
-        checked={formData.accuracy === "mostly-incorrect"}
-        onChange={handleChange}
-        className={styles.radioInput}
-        required
-      />
-      <span className={styles.radioLabel}>
-        The suggestions were mostly incorrect or irrelevant
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="accuracy"
-        value="some-made-sense"
-        checked={formData.accuracy === "some-made-sense"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Some suggestions made sense, but others seemed off
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="accuracy"
-        value="generally-reasonable"
-        checked={formData.accuracy === "generally-reasonable"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        The suggestions were generally reasonable and plausible
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="accuracy"
-        value="mostly-clear-accurate"
-        checked={formData.accuracy === "mostly-clear-accurate"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Most suggestions were clear and accurate
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="accuracy"
-        value="highly-logical"
-        checked={formData.accuracy === "highly-logical"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        All suggestions were highly logical and well-grounded
-      </span>
-    </label>
-  </div>
-  {errors.accuracy && (
-    <span className={styles.errorMessage}>{errors.accuracy}</span>
-  )}
-</div>
+            <div className={styles.radioGroup}>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="accuracy"
+                  value="mostly-incorrect"
+                  checked={formData.accuracy === "mostly-incorrect"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                  required
+                />
+                <span className={styles.radioLabel}>
+                  The suggestions were mostly incorrect or irrelevant
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="accuracy"
+                  value="some-made-sense"
+                  checked={formData.accuracy === "some-made-sense"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Some suggestions made sense, but others seemed off
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="accuracy"
+                  value="generally-reasonable"
+                  checked={formData.accuracy === "generally-reasonable"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  The suggestions were generally reasonable and plausible
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="accuracy"
+                  value="mostly-clear-accurate"
+                  checked={formData.accuracy === "mostly-clear-accurate"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Most suggestions were clear and accurate
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="accuracy"
+                  value="highly-logical"
+                  checked={formData.accuracy === "highly-logical"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  All suggestions were highly logical and well-grounded
+                </span>
+              </label>
+            </div>
+            {errors.accuracy && (
+              <span className={styles.errorMessage}>{errors.accuracy}</span>
+            )}
+          </div>
 
-{/* Q2 Helpfulness */}
-<div className={styles.questionGroup}>
-  <h2 className={styles.questionTitle}>2. How helpful were the AI’s suggestions in supporting your creative thinking?
-</h2>
+          {/* Q2 Helpfulness */}
+          <div className={styles.questionGroup}>
+            <h2 className={styles.questionTitle}>2. How helpful were the AI’s suggestions in supporting your creative thinking?
+            </h2>
 
-  <div className={styles.radioGroup}>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="helpfulness"
-        value="not-helpful"
-        checked={formData.helpfulness === "not-helpful"}
-        onChange={handleChange}
-        className={styles.radioInput}
-        required
-      />
-      <span className={styles.radioLabel}>
-        Not helpful at all — I did not use any of the AI’s suggestions
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="helpfulness"
-        value="slightly-helpful"
-        checked={formData.helpfulness === "slightly-helpful"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Slightly helpful — One or two ideas provided a small nudge
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="helpfulness"
-        value="moderately-helpful"
-        checked={formData.helpfulness === "moderately-helpful"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Moderately helpful — The suggestions helped me brainstorm more effectively
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="helpfulness"
-        value="very-helpful"
-        checked={formData.helpfulness === "very-helpful"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Very helpful — The suggestions pushed me in new directions
-      </span>
-    </label>
-    <label className={styles.radioOption}>
-      <input
-        type="radio"
-        name="helpfulness"
-        value="extremely-helpful"
-        checked={formData.helpfulness === "extremely-helpful"}
-        onChange={handleChange}
-        className={styles.radioInput}
-      />
-      <span className={styles.radioLabel}>
-        Extremely helpful — The AI greatly enhanced my creativity
-      </span>
-    </label>
-  </div>
-  {errors.helpfulness && (
-    <span className={styles.errorMessage}>{errors.helpfulness}</span>
-  )}
-</div>
+            <div className={styles.radioGroup}>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="helpfulness"
+                  value="not-helpful"
+                  checked={formData.helpfulness === "not-helpful"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                  required
+                />
+                <span className={styles.radioLabel}>
+                  Not helpful at all — I did not use any of the AI’s suggestions
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="helpfulness"
+                  value="slightly-helpful"
+                  checked={formData.helpfulness === "slightly-helpful"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Slightly helpful — One or two ideas provided a small nudge
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="helpfulness"
+                  value="moderately-helpful"
+                  checked={formData.helpfulness === "moderately-helpful"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Moderately helpful — The suggestions helped me brainstorm more effectively
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="helpfulness"
+                  value="very-helpful"
+                  checked={formData.helpfulness === "very-helpful"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Very helpful — The suggestions pushed me in new directions
+                </span>
+              </label>
+              <label className={styles.radioOption}>
+                <input
+                  type="radio"
+                  name="helpfulness"
+                  value="extremely-helpful"
+                  checked={formData.helpfulness === "extremely-helpful"}
+                  onChange={handleChange}
+                  className={styles.radioInput}
+                />
+                <span className={styles.radioLabel}>
+                  Extremely helpful — The AI greatly enhanced my creativity
+                </span>
+              </label>
+            </div>
+            {errors.helpfulness && (
+              <span className={styles.errorMessage}>{errors.helpfulness}</span>
+            )}
+          </div>
 
 
           {/* Q3 Inspiration (dropdown) */}
@@ -275,10 +276,10 @@ function PostSurvey() {
             >
               <option value="">Select an option</option>
               <option value="1">1 – Not at all inspiring — no new directions came to mind</option>
-    <option value="2">2 – Slightly inspiring — a small spark of new thinking</option>
-    <option value="3">3 – Moderately inspiring — some useful new directions emerged</option>
-    <option value="4">4 – Very inspiring — many new directions came to mind</option>
-    <option value="5">5 – Extremely inspiring — the suggestions strongly shaped my thinking in new ways</option>
+              <option value="2">2 – Slightly inspiring — a small spark of new thinking</option>
+              <option value="3">3 – Moderately inspiring — some useful new directions emerged</option>
+              <option value="4">4 – Very inspiring — many new directions came to mind</option>
+              <option value="5">5 – Extremely inspiring — the suggestions strongly shaped my thinking in new ways</option>
             </select>
           </div>
 
@@ -296,10 +297,10 @@ function PostSurvey() {
             >
               <option value="">Select an option</option>
               <option value="1">1 – Not at all — they did not help me expand my ideas</option>
-    <option value="2">2 – Slightly — provided a small addition to my ideas</option>
-    <option value="3">3 – Moderately — helped me add some details or depth</option>
-    <option value="4">4 – Quite a lot — significantly expanded or developed my ideas</option>
-    <option value="5">5 – A great deal — transformed my ideas into much richer versions</option>
+              <option value="2">2 – Slightly — provided a small addition to my ideas</option>
+              <option value="3">3 – Moderately — helped me add some details or depth</option>
+              <option value="4">4 – Quite a lot — significantly expanded or developed my ideas</option>
+              <option value="5">5 – A great deal — transformed my ideas into much richer versions</option>
             </select>
           </div>
 
@@ -317,10 +318,10 @@ function PostSurvey() {
             >
               <option value="">Select an option</option>
               <option value="1">1 – Not at all — no new combinations emerged</option>
-    <option value="2">2 – Slightly — only one or two small combinations</option>
-    <option value="3">3 – Moderately — some useful recombinations occurred</option>
-    <option value="4">4 – Quite a lot — I created several new combinations of ideas</option>
-    <option value="5">5 – Very much so — the suggestions led to highly novel recombinations</option>
+              <option value="2">2 – Slightly — only one or two small combinations</option>
+              <option value="3">3 – Moderately — some useful recombinations occurred</option>
+              <option value="4">4 – Quite a lot — I created several new combinations of ideas</option>
+              <option value="5">5 – Very much so — the suggestions led to highly novel recombinations</option>
             </select>
           </div>
 

@@ -4,37 +4,41 @@ import { useNavigate } from "react-router-dom";
 import { useSurvey } from "../../surveyIDContext";
 
 function AUT({ round, onStateChange, task, randomString, temperature }) {
-  const [useCases, setUseCases] = useState(() =>
-    Array.from({ length: 3 }, () => ({ use: "", explanation: "" }))
-  );
-  const { surveyId } = useSurvey();
-  
-  const [timeLeft, setTimeLeft] = useState(240); // 4 minutes in seconds
+  const [phase, setPhase] = useState(1);
+  const [generatedIdeas, setGeneratedIdeas] = useState(Array(6).fill(""));
+  const [selectedIdeaIndex, setSelectedIdeaIndex] = useState(null);
+  const [refinedIdea, setRefinedIdea] = useState("");
+  const [timeLeft, setTimeLeft] = useState(360); // 6 mins for Phase 1
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { surveyId, taskSequence, currentTaskIndex, setCurrentTaskIndex } = useSurvey();
+  const navigate = useNavigate();
   const [currentPatent, setCurrentPatent] = useState(null);
+
+  // Inform parent component (AUT_gpt) about phase changes so it can hide chatbot in Phase 2
+  useEffect(() => {
+    onStateChange(phase);
+    window.scrollTo(0, 0);
+  }, [phase, onStateChange]);
 
   // Fetch patent for the current task
   useEffect(() => {
     if (surveyId && task) {
       fetchPatentForTask();
     } else if (randomString) {
-      console.log("Using provided randomString as patent:", randomString);
       setCurrentPatent(randomString);
     }
   }, [surveyId, task, randomString]);
 
   const fetchPatentForTask = async () => {
     try {
-      const apiUrl = `${
-        import.meta.env.VITE_NODE_API
-      }/api/patent-for-task/${surveyId}/${task}`;
-      console.log(`Attempting to fetch patent from: ${apiUrl}`);
-
+      const apiUrl = `${import.meta.env.VITE_NODE_API}/api/patent-for-task/${surveyId}/${task}`;
       const response = await fetch(apiUrl);
 
       if (response.ok) {
         const patentData = await response.json();
         setCurrentPatent(patentData.data);
-        console.log(`Patent fetched for Task ${task}:`, patentData.data);
       } else {
         console.error(`API failed with status: ${response.status}`);
       }
@@ -43,18 +47,13 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
     }
   };
 
-  // Reset timer when round changes
-  useEffect(() => {
-    setTimeLeft(240);
-  }, [round]);
-
   useEffect(() => {
     if (timeLeft === 0) {
-      handleSubmit();
+      handlePhaseTransition();
     }
 
     const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft - 1);
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -66,53 +65,86 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
     return `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`;
   };
 
-  const handleChange = (index, type, value) => {
-    const newUseCases = [...useCases];
-    newUseCases[index][type] = value;
-    setUseCases(newUseCases);
+  const handleIdeaChange = (index, value) => {
+    const newIdeas = [...generatedIdeas];
+    newIdeas[index] = value;
+    setGeneratedIdeas(newIdeas);
   };
 
-  const addMoreUseCases = () => {
-    if (useCases.length < 15) {
-      setUseCases([...useCases, { use: "", explanation: "" }]);
+  const addMoreIdeas = () => {
+    setGeneratedIdeas([...generatedIdeas, ""]);
+  };
+
+  const handlePhaseTransition = () => {
+    if (phase === 1) {
+      setPhase(2);
+      setTimeLeft(60); // 1 minute for Phase 2
+    } else if (phase === 2) {
+      setPhase(3);
+      setTimeLeft(360); // 6 minutes for Phase 3
+    } else if (phase === 3) {
+      handleSubmit();
     }
   };
 
   const handleSubmit = async (e) => {
     if (e) e.preventDefault();
+    if (isSubmitting) return;
 
+    // Phase 1->2 transition
+    if (phase === 1) {
+      handlePhaseTransition();
+      return;
+    }
+
+    // Phase 2->3 transition
+    if (phase === 2) {
+      if (selectedIdeaIndex === null) {
+        setErrors({ selection: "Please select one idea to proceed." });
+        return;
+      }
+      setErrors({});
+      handlePhaseTransition();
+      return;
+    }
+
+    // Phase 3 Final Submission
+    setIsSubmitting(true);
     try {
       let NODE_api = `${import.meta.env.VITE_NODE_API}/api/AUT_gpt`;
       const response = await fetch(NODE_api, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          useCases,
+          generatedIdeas: generatedIdeas.filter(idea => idea.trim() !== ""),
+          selectedIdea: generatedIdeas[selectedIdeaIndex] || "",
+          refinedIdea,
           preSurveyId: surveyId,
-          round,
-          object: currentPatent,
+          round: phase,
+          object: currentPatent?.patentName || "",
           temperature,
           task,
         }),
       });
 
       if (response.ok) {
-        const body = await response.json();
-        console.log("Task submission successful:", body);
-        console.log("Patent data sent:", currentPatent);
-        setUseCases(() =>
-          Array.from({ length: 3 }, () => ({ use: "", explanation: "" }))
-        );
-        setTimeLeft(180);
-        onStateChange(round + 1);
+        if (currentTaskIndex === 0) {
+          // Transition to Task 2 Instructions
+          setCurrentTaskIndex(1);
+          window.scrollTo(0, 0);
+          navigate("/TaskInstructions");
+        } else {
+          // Transition to final PostSurvey
+          navigate("/PostSurvey");
+        }
       } else {
         alert("Failed to submit form");
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Error:", error);
       alert("Failed to submit form due to an error.");
+      setIsSubmitting(false);
     }
   };
 
@@ -120,7 +152,7 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
     <div className={styles.container}>
       <div className={styles.taskHeader}>
         <h1 className={styles.taskTitle}>
-          Task {task}: Patent Technology Applications
+          Task {currentTaskIndex + 1}: AI-Supported Ideation
         </h1>
         <div className={styles.patentSection}>
           <h2 className={styles.patentName}>
@@ -131,8 +163,7 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
             {currentPatent?.patentDescription ? (
               (() => {
                 const text = currentPatent.patentDescription || "";
-                const [summaryPart, detailsPart] =
-                  text.split("Key Technical Details:");
+                const [summaryPart, detailsPart] = text.split("Key Technical Details:");
 
                 return (
                   <>
@@ -149,9 +180,7 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
                             .trim()
                             .split("\n")
                             .map((line, index) =>
-                              line.trim() ? (
-                                <p key={index}>{line.trim()}</p>
-                              ) : null
+                              line.trim() ? <p key={index}>{line.trim()}</p> : null
                             )}
                         </div>
                       </>
@@ -164,48 +193,110 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
             )}
           </div>
         </div>
+
+        <h3 style={{ marginTop: "20px" }}>Phase {phase}</h3>
         <p className={styles.taskDescription}>
-          List three creative application ideas for how this technology could be
-          used in the real world.
+          {phase === 1 && "Use the AI chatbot to help generate as many creative product ideas as possible that could be developed using the patented technology."}
+          {phase === 2 && "Select your best idea from the ones you generated."}
+          {phase === 3 && "Use the AI chatbot to help develop the selected idea into a clear and well-defined product solution. Describe what it is and how it works."}
         </p>
         <div className={styles.timer}>Time remaining: {formatTime()}</div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.useCaseForm}>
-        {useCases.map((item, index) => (
-          <div key={index} className={styles.useCaseGroup}>
-            <div className={styles.useCaseNumber}>{index + 1}</div>
-            <div className={styles.inputGroup}>
-              <input
-                type="text"
-                placeholder="What's your application idea?"
-                value={item.use}
-                onChange={(e) => handleChange(index, "use", e.target.value)}
-                className={styles.inputField}
-              />
-              <input
-                type="text"
-                placeholder="Explain how it would work..."
-                value={item.explanation}
-                onChange={(e) =>
-                  handleChange(index, "explanation", e.target.value)
-                }
-                className={styles.inputField}
-              />
+        {phase === 1 && (
+          <>
+            {generatedIdeas.map((idea, index) => (
+              <div key={index} className={styles.inputWrapper}>
+                <input
+                  type="text"
+                  placeholder={`Application Idea ${index + 1}`}
+                  value={idea}
+                  onChange={(e) => handleIdeaChange(index, e.target.value)}
+                  className={styles.inputField}
+                  style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+                />
+              </div>
+            ))}
+            <button
+              type="button"
+              onClick={addMoreIdeas}
+              style={{ padding: "10px 20px", marginTop: "10px", fontSize: "16px", cursor: "pointer", display: "block", marginBottom: "20px" }}
+            >
+              + Add Another Idea
+            </button>
+            <div className={styles.buttonContainer}>
+              <button type="submit" className={styles.submitButton}>
+                Submit Ideas
+              </button>
             </div>
-          </div>
-        ))}
-        {task >= 2 && task <= 4 && round === 2 && (
-      <p style={{ marginBottom: "1rem", color: "#444", fontSize: "20px" }}>
-          Please provide updated ideas from Round 1 or write new ideas. 
-          Do not only repeat your original Round 1 answers.
-      </p>
+          </>
         )}
-        <div className={styles.buttonContainer}>
-          <button type="submit" className={styles.submitButton}>
-            Submit Answers
-          </button>
-        </div>
+
+        {phase === 2 && (
+          <>
+            <div style={{ padding: "20px", background: "#f9f9f9", borderRadius: "8px", border: "1px solid #ddd" }}>
+              {generatedIdeas.filter(idea => idea.trim() !== "").length === 0 ? (
+                <p>No ideas were generated in Phase 1.</p>
+              ) : (
+                generatedIdeas.map((idea, index) => {
+                  if (idea.trim() === "") return null;
+                  return (
+                    <label key={index} style={{ display: "block", marginBottom: "15px", cursor: "pointer" }}>
+                      <input
+                        type="radio"
+                        name="selectedIdea"
+                        value={index}
+                        checked={selectedIdeaIndex === index}
+                        onChange={() => {
+                          setSelectedIdeaIndex(index);
+                          setErrors({});
+                        }}
+                        style={{ marginRight: "10px" }}
+                      />
+                      {idea}
+                    </label>
+                  );
+                })
+              )}
+            </div>
+            {errors.selection && <div className={styles.errorMessage} style={{ color: "red", marginTop: "10px" }}>{errors.selection}</div>}
+
+            <div className={styles.buttonContainer}>
+              <button
+                type="submit"
+                className={styles.submitButton}
+                disabled={selectedIdeaIndex === null && generatedIdeas.filter(i => i.trim() !== "").length > 0}
+                style={{ opacity: (selectedIdeaIndex === null && generatedIdeas.filter(i => i.trim() !== "").length > 0) ? 0.5 : 1 }}
+              >
+                Confirm Selection
+              </button>
+            </div>
+          </>
+        )}
+
+        {phase === 3 && (
+          <>
+            <div style={{ padding: "15px", background: "#e8f4fc", borderRadius: "8px", border: "1px solid #b6d9f5", marginBottom: "20px" }}>
+              <strong>Selected Idea:</strong>
+              <p style={{ marginTop: "10px" }}>{generatedIdeas[selectedIdeaIndex] || "No idea selected."}</p>
+            </div>
+
+            <textarea
+              placeholder="Elaborate and refine your idea here with the help of the AI assistant..."
+              value={refinedIdea}
+              onChange={(e) => setRefinedIdea(e.target.value)}
+              rows={12}
+              style={{ width: "100%", padding: "15px", borderRadius: "8px", border: "1px solid #ccc", fontSize: "16px", resize: "vertical" }}
+            />
+
+            <div className={styles.buttonContainer} style={{ marginTop: "20px" }}>
+              <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                {isSubmitting ? "Submitting..." : "Submit Refinement"}
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );

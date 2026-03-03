@@ -8,18 +8,16 @@ function ThankYou() {
   }, []);
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <div className={styles.checkmarkContainer}>
-            <div className={styles.checkmark}>✓</div>
-          </div>
-          <h1 className={styles.title}>Thank You!</h1>
-          <p className={styles.message}>
-            Your responses have been successfully submitted. We greatly
-            appreciate your participation in this research study.
-          </p>
+    <div className={styles.instructionPage}>
+      <div className={styles.card}>
+        <div className={styles.checkmarkContainer}>
+          <div className={styles.checkmark}>✓</div>
         </div>
+        <h1 className={styles.title}>Thank You!</h1>
+        <p className={styles.message}>
+          Your responses have been successfully submitted. We greatly
+          appreciate your participation in this research study.
+        </p>
       </div>
     </div>
   );
