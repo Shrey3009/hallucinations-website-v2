@@ -35,11 +35,9 @@ function TaskInstructions() {
                     <div className={styles.phaseCard}>
                         <div className={styles.phaseNumber}>1</div>
                         <div className={styles.phaseInfo}>
-                            <h3>Phase 1: Idea Generation <span className={styles.timeTag}>6 Minutes</span></h3>
+                            <h3>Phase 1: Initial Ideation <span className={styles.timeTag}>6 Minutes</span></h3>
                             <p className={styles.phaseDescription}>
-                                You will be presented with a patent description. Your task is to
-                                <strong> generate as many potential product ideas as possible</strong>.
-                                Focus on quantity - write down all ideas that come to mind!
+                                <strong>Your Task:</strong> Explore the patented technology and generate as many real-world product ideas as possible. Focus on coming up with a distinct and diverse set of ideas.
                             </p>
                         </div>
                     </div>
@@ -49,8 +47,7 @@ function TaskInstructions() {
                         <div className={styles.phaseInfo}>
                             <h3>Phase 2: Idea Selection <span className={styles.timeTag}>1 Minute</span></h3>
                             <p className={styles.phaseDescription}>
-                                From all the ideas you generated in Phase 1, <strong>select the ONE</strong> you
-                                consider the most promising. Choose the idea with the best potential to become a successful product.
+                                <strong>Your Task:</strong> Review all the product ideas you generated in Phase 1 and select the one you believe has the highest real-world potential. Once confirmed, your selected idea will carry forward to Phase 3.
                             </p>
                         </div>
                     </div>
@@ -58,9 +55,9 @@ function TaskInstructions() {
                     <div className={styles.phaseCard}>
                         <div className={styles.phaseNumber}>3</div>
                         <div className={styles.phaseInfo}>
-                            <h3>Phase 3: Idea Refinement <span className={styles.timeTag}>6 Minutes</span></h3>
+                            <h3>Phase 3: Refine Your Idea <span className={styles.timeTag}>6 Minutes</span></h3>
                             <p className={styles.phaseDescription}>
-                                Take your selected idea and <strong>develop it into a concrete and well-defined product concept</strong>. Describe its key features, target users, and unique benefits.
+                                <strong>Your Task:</strong> Develop your selected idea into a clear and well-defined product concept. Describe what the product is, how it works, and how it uses the patented technology to create value.
                             </p>
                         </div>
                     </div>

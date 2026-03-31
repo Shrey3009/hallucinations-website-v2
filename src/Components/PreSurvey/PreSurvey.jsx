@@ -14,7 +14,7 @@ function SurveyForm() {
 
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
-  const { setSurveyId, setCurrentTaskIndex } = useSurvey();
+  const { setSurveyId, setCurrentTaskIndex, setTaskSequence } = useSurvey();
   const [selection, setSelection] = useState("");
   const [otherRace, setOtherRace] = useState("");
 
@@ -114,9 +114,17 @@ function SurveyForm() {
             `Patent assignment API not available (Status: ${patentResponse.status}). Using fallback logic.`
           );
         } else {
-          const patentData = await patentResponse.json();
-          console.log("Patents assigned successfully:", patentData);
-          // ✅ no longer storing patentAssignmentId in context
+          const resBody = await patentResponse.json();
+          console.log("Patents assigned successfully:", resBody);
+
+          if (resBody.data?.taskSequence) {
+            const seq =
+              resBody.data.taskSequence === "ai_first"
+                ? ["AUT_gpt", "AUT"]
+                : ["AUT", "AUT_gpt"];
+            setTaskSequence(seq);
+            console.log("Task sequence updated from backend:", seq);
+          }
         }
       } catch (patentError) {
         console.log(

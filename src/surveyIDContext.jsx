@@ -28,7 +28,7 @@ export const SurveyProvider = ({ children }) => {
   }, [surveyId, taskSequence, currentTaskIndex]);
 
   return (
-    <SurveyContext.Provider value={{ surveyId, setSurveyId, taskSequence, currentTaskIndex, setCurrentTaskIndex }}>
+    <SurveyContext.Provider value={{ surveyId, setSurveyId, taskSequence, setTaskSequence, currentTaskIndex, setCurrentTaskIndex }}>
       {children}
     </SurveyContext.Provider>
   );

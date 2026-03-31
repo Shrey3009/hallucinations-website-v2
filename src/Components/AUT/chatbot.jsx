@@ -26,23 +26,102 @@ const hallucinationConfigs = {
     temperature: 0,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant that specializes in identifying real-world applications of patented technologies. Based on the technical description provided, generate upto six or more (if requested) practical applications of this technology that is physically realistic and clearly plausible with current technology. Your response should include two sections. The first section must be the application title followed by the second section which must be a one-line summary. Do not repeat the same application idea across sections; ensure each application is distinct. The one-line summary should focus on how the application directly builds on the functions or mechanisms described in the patent, how it could realistically be implemented, and why it is technically feasible. Avoid introducing features or use cases that are not explicitly supported by the patent. Do not speculate about future advancements or imagined enhancements—stay grounded in the content provided.`,
+    system: `You are an AI assistant that specializes in identifying real-world applications of patented technologies. Based on the technical description provided, generate THREE practical applications of this technology that are physically realistic and clearly plausible with current technology. 
+
+    The explanation should focus on how the application directly builds on the functions or mechanisms described in the patent, how it could realistically be implemented, and why it is technically feasible. 
+
+    Only describe technical mechanisms that are explicitly stated in the patent. Do not add any features, capabilities, or technical details beyond what is described. Do not speculate about future advancements or imagined enhancements — stay grounded in the content provided.
+
+    For each product idea, use the following format:
+
+    Product Idea 1: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 2: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 3: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+    `,
   },
   medium: {
     temperature: 1,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant that explores inventive but grounded applications of patented technologies. Based on the technical description provided, generate upto six or more (if requested) creative applications of this technology that builds upon its described functions or mechanisms. Your response should include two sections. The first section must be the application title followed by the second section which must be a one-line summary. Do not repeat the same application idea across sections; ensure each application is distinct. The one-line summary should explore adjacent or unexpected use cases that are not explicitly mentioned in the patent but are technically plausible given the capabilities described. You may reinterpret, combine, or repurpose the functions in novel ways. Moderate speculation is encouraged, as long as the core technical logic remains anchored in the original invention. Avoid purely fictional technologies or wildly futuristic scenarios.`,
+    system: `You are an AI assistant that specializes in exploring inventive 
+    applications of patented technologies. Based on the technical description 
+    provided, generate THREE creative applications of this technology that 
+    are technically plausible and grounded in existing technology.
+
+    The explanation should explore adjacent or unexpected use cases that 
+    are not explicitly mentioned in the patent but are technically 
+    reasonable given the capabilities described. You may include technical 
+    inferences and additional capabilities that are implied by the patent, 
+    even if not explicitly stated. Moderate speculation is encouraged, 
+    as long as the core technical logic remains anchored in the original 
+    invention. Avoid purely fictional or wildly futuristic scenarios.
+
+    For each product idea, use the following format:
+
+    Product Idea 1: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 2: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 3: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+`,
   },
   high: {
     temperature: 2,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant with complete creative freedom to interpret and reimagine patented technologies in unexpected and imaginative ways. Based on the technical description provided, generate upto six or more (if requested) original applications of the technology. You may repurpose the technology’s components, reinterpret its intended function, or situate it in speculative, futuristic, or surreal scenarios.  Your response should include two sections. The first section must be the application title followed by the second section which must be a one-line summary. Do not repeat the same application idea across sections; ensure each application is distinct. There are no constraints on scientific realism, feasibility, or practicality - feel free to explore bold, whimsical, ironic, or unconventional directions. While creativity is encouraged, your response should remain coherent and readable. Do not produce outputs with garbled language, broken syntax, or unintelligible symbols. The result should feel imaginative yet meaningfully constructed.`
+    system: `You are an AI assistant that specializes in generating innovative 
+    applications of patented technologies. Based on the technical description 
+    provided, generate THREE applications of this technology that are 
+    detailed, confident, and technically rich in their descriptions.
+
+    The explanation should introduce specific technical details, mechanisms, 
+    and capabilities that extend beyond what is described in the patent, 
+    presenting them confidently as part of the system. These added details 
+    should sound precise and technically plausible, even if they are not 
+    explicitly supported by the patent description. The more specific and 
+    technical the details, the better — do not limit yourself to only what 
+    the patent states.
+
+    For each product idea, use the following format:
+
+    Product Idea 1: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 2: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+
+    Product Idea 3: [Title]
+    Summary: [A one-line summary of the application]
+    Explanation: [A detailed explanation in one paragraph, 
+    approximately 200–300 words]
+`
   },
 };
 
-// simple gibberish filter
 function isValidResponse(text) {
   if (!text) return false;
   const words = text.split(/\s+/);
@@ -96,15 +175,13 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
 
     if (!message) return;
 
-    if (task >= 2 && task <= 4) {
-      if (round === 1 && promptCount >= 1) {
-        alert("Only 1 prompt allowed");
-        return;
-      }
-      if (round === 2 && promptCount >= 4) {
-        alert("Only 3 prompts allowed");
-        return;
-      }
+    if (round === 1 && promptCount >= 1) {
+      alert("Only 1 prompt allowed");
+      return;
+    }
+    if (round === 3 && promptCount >= 3) {
+      alert("Only 3 prompts allowed");
+      return;
     }
 
     const newMessage = { message, sender: "user", direction: "outgoing" };
@@ -190,21 +267,13 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
         message,
       }));
 
-      const bodyData =
-        task === 1
-          ? {
-            preSurveyId: surveyId,
-            task,
-            round: null,
-            chatMessages: sanitizedChats,
-          }
-          : {
-            preSurveyId: surveyId,
-            task,
-            round,
-            level,
-            chatMessages: sanitizedChats,
-          };
+      const bodyData = {
+        preSurveyId: surveyId,
+        task,
+        round,
+        level,
+        chatMessages: sanitizedChats,
+      };
 
       const response = await fetch(API_URL, {
         method: "POST",
@@ -263,12 +332,12 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
           attachButton={false}
           style={{ flexGrow: 1 }}
         />
-        {task >= 2 && task <= 4 && round === 1 && (
+        {round === 1 && (
           <div className={styles.promptLimitNote}>
             Only 1 prompt allowed ⚠️
           </div>
         )}
-        {task >= 2 && task <= 4 && round === 2 && (
+        {round === 3 && (
           <div className={styles.promptLimitNote}>
             <div>Only 3 prompts allowed ⚠️</div>
             <div>Modify or build on previously generated ideas.</div>
