@@ -330,10 +330,6 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
       </div>
 
       <div className={styles.inputWrapper}>
-        <div style={{ textAlign: "center", color: promptsRemaining <= 0 ? "red" : "#555", fontSize: "12px", marginBottom: "5px", fontWeight: "bold" }}>
-          {round === 1 && `Phase 1 Limit: ${promptsRemaining} prompt${promptsRemaining !== 1 ? 's' : ''} remaining`}
-          {round === 3 && `Phase 3 Limit: ${promptsRemaining} prompt${promptsRemaining !== 1 ? 's' : ''} remaining (Modify or build on ideas)`}
-        </div>
         <MessageInput
           placeholder={promptsRemaining <= 0 ? "Prompt limit reached" : "Type your message..."}
           onSend={handleSend}
@@ -341,6 +337,16 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
           style={{ flexGrow: 1 }}
           disabled={isInputDisabled}
         />
+        {round === 1 && (
+          <div className={styles.promptLimitNote}>
+            Only 1 prompt allowed
+          </div>
+        )}
+        {round === 3 && (
+          <div className={styles.promptLimitNote}>
+            Only 3 prompts allowed
+          </div>
+        )}
       </div>
     </div>
   );
