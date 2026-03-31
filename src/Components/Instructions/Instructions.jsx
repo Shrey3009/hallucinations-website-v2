@@ -53,16 +53,7 @@ function Instructions({ round: phase, isAI }) {
                 •	Use the AI to help you <strong>develop and deepen</strong> your selected idea - not to generate new ones<br />
                 •	Your prompts must stay focused on your selected idea above<br />
                 <br />
-                ✅ You may ask the AI to:<br />
-                •	🔨 Elaborate — Define the key features, target users, or use scenarios<br />
-                "What are the key features of this product and who would use it?"<br />
-                •	✨ Refine — Improve the value proposition based on the technology's strengths<br />
-                "How does this product create value using the patented technology?"<br />
-                •	🌱 Clarify — Make specific aspects of your idea more concrete<br />
-                "How would this product work in practice?"<br />
-                <br />
-                ❌ Not allowed:<br />
-                "Give me a new idea" / Asking the AI to switch to a completely different direction
+                ✅ You may ask the AI to:
               </p>
             )}
             <div className={styles.options}>
@@ -82,6 +73,12 @@ function Instructions({ round: phase, isAI }) {
                 <p><i>"How would this product work in practice?"</i></p>
               </div>
             </div>
+            {isAI && (
+              <p className={styles.text} style={{ marginTop: '20px' }}>
+                ❌ Not allowed:<br />
+                "Give me a new idea" / Asking the AI to switch to a completely different direction
+              </p>
+            )}
             <p className={styles.note}>
               Submit your final refined product concept when you are finished.
             </p>
