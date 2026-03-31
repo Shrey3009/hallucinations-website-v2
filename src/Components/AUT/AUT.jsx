@@ -174,7 +174,6 @@ function AUT() {
             return (
               <>
                 <p>
-                  <strong>Summary:</strong>{" "}
                   {summaryPart.replace("Summary:", "").trim()}
                 </p>
                 {detailsPart && (

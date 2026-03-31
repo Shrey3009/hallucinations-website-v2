@@ -15,12 +15,12 @@ function Instructions({ round: phase, isAI }) {
             </p>
             {isAI && (
               <p className={styles.text}>
-                How to use the AI:
-                • You have <span style={{ color: "red", fontWeight: "bold" }}>1 prompt</span> opportunity in this phase
-                • In your prompt, ask the AI for up to <span style={{ color: "red", fontWeight: "bold" }}>3 application ideas</span>
-                • Use the AI as a starting point, then keep building on your own
-
-                ✅ Example prompt: "Give me 3 creative product ideas based on this patent xxx"
+                How to use the AI:<br />
+                • You have <span style={{ color: "red", fontWeight: "bold" }}>1 prompt</span> opportunity in this phase<br />
+                • In your prompt, ask the AI for up to <span style={{ color: "red", fontWeight: "bold" }}>3 application ideas</span><br />
+                • Use the AI as a starting point, then keep building on your own<br />
+                <br />
+                ✅ Example prompt: "Give me 3 creative product ideas based on this patent xxx"<br />
                 <br />
                 ❌ Not allowed: "Give me 10 ideas" / Submitting more than 1 prompt
               </p>
@@ -48,20 +48,20 @@ function Instructions({ round: phase, isAI }) {
             </p>
             {isAI && (
               <p className={styles.text}>
-                How to use the AI:
-                •	You have <strong>3 prompts</strong> in this phase
-                •	Use the AI to help you <strong>develop and deepen</strong> your selected idea - not to generate new ones
-                •	Your prompts must stay focused on your selected idea above
-
-                ✅ You may ask the AI to:
-                •	🔨 Elaborate — Define the key features, target users, or use scenarios
-                "What are the key features of this product and who would use it?"
-                •	✨ Refine — Improve the value proposition based on the technology's strengths
-                "How does this product create value using the patented technology?"
-                •	🌱 Clarify — Make specific aspects of your idea more concrete
-                "How would this product work in practice?"
-
-                ❌ Not allowed:
+                How to use the AI:<br />
+                •	You have <strong>3 prompts</strong> in this phase<br />
+                •	Use the AI to help you <strong>develop and deepen</strong> your selected idea - not to generate new ones<br />
+                •	Your prompts must stay focused on your selected idea above<br />
+                <br />
+                ✅ You may ask the AI to:<br />
+                •	🔨 Elaborate — Define the key features, target users, or use scenarios<br />
+                "What are the key features of this product and who would use it?"<br />
+                •	✨ Refine — Improve the value proposition based on the technology's strengths<br />
+                "How does this product create value using the patented technology?"<br />
+                •	🌱 Clarify — Make specific aspects of your idea more concrete<br />
+                "How would this product work in practice?"<br />
+                <br />
+                ❌ Not allowed:<br />
                 "Give me a new idea" / Asking the AI to switch to a completely different direction
               </p>
             )}

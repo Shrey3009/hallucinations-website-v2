@@ -157,7 +157,6 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
                 return (
                   <>
                     <p>
-                      <strong>Summary:</strong>{" "}
                       {summaryPart.replace("Summary:", "").trim()}
                     </p>
 
