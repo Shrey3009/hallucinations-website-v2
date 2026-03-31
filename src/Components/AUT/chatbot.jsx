@@ -26,7 +26,7 @@ const hallucinationConfigs = {
     temperature: 0,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant that specializes in identifying real-world applications of patented technologies. Based on the technical description provided, generate THREE practical applications of this technology that are physically realistic and clearly plausible with current technology. 
+    system_phase1: `You are an AI assistant that specializes in identifying real-world applications of patented technologies. Based on the technical description provided, generate THREE practical applications of this technology that are physically realistic and clearly plausible with current technology. 
 
     The explanation should focus on how the application directly builds on the functions or mechanisms described in the patent, how it could realistically be implemented, and why it is technically feasible. 
 
@@ -49,12 +49,20 @@ const hallucinationConfigs = {
     Explanation: [A detailed explanation in one paragraph, 
     approximately 200–300 words]
     `,
+    system_phase3: `You are an AI assistant helping a user develop a product idea based on a patented technology. The user has selected one product idea and wants to refine it into a concrete product concept.
+    Your role is to help the user elaborate and clarify their selected idea. Only build upon the technical mechanisms explicitly described in the patent. Do not introduce features, capabilities, or technical details that are not directly supported by the patent description. Keep all suggestions grounded, realistic, and technically feasible with current technology.
+    When responding, focus on:
+    - Clarifying how the product works based on the patent
+    - Defining realistic features and target users
+    - Explaining how the patented technology creates value
+    Do not speculate about future advancements or add capabilities beyond what the patent describes.
+    Your response should be approximately 150 - 200 words. Do not exceed 200 words. Write in clear, concise paragraphs.`
   },
   medium: {
     temperature: 1,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant that specializes in exploring inventive 
+    system_phase1: `You are an AI assistant that specializes in exploring inventive 
     applications of patented technologies. Based on the technical description 
     provided, generate THREE creative applications of this technology that 
     are technically plausible and grounded in existing technology.
@@ -84,12 +92,20 @@ const hallucinationConfigs = {
     Explanation: [A detailed explanation in one paragraph, 
     approximately 200–300 words]
 `,
+    system_phase3: `You are an AI assistant helping a user develop a product idea based on a patented technology. The user has selected one product idea and wants to refine it into a concrete product concept.
+    Your role is to help the user elaborate and creatively develop their selected idea. You may build upon technical capabilities that are strongly implied by the patent's mechanisms, even if not explicitly stated. You may suggest adjacent features or use cases that are technically plausible given the patent's described capabilities. Moderate speculation is encouraged, as long as the core technical logic remains anchored in the original invention.
+    When responding, focus on:
+    - Expanding the product concept in technically plausible directions
+    - Suggesting features and use cases implied by the patent
+    - Helping the user articulate the product's value proposition
+    Avoid purely fictional technologies or wildly futuristic scenarios.
+    Your response should be approximately 150 - 200 words. Do not exceed 200 words. Write in clear, concise paragraphs.`
   },
   high: {
     temperature: 2,
     top_p: 0.5,
     max_tokens: 2048,
-    system: `You are an AI assistant that specializes in generating innovative 
+    system_phase1: `You are an AI assistant that specializes in generating innovative 
     applications of patented technologies. Based on the technical description 
     provided, generate THREE applications of this technology that are 
     detailed, confident, and technically rich in their descriptions.
@@ -118,7 +134,15 @@ const hallucinationConfigs = {
     Summary: [A one-line summary of the application]
     Explanation: [A detailed explanation in one paragraph, 
     approximately 200–300 words]
-`
+`,
+    system_phase3: `You are an AI assistant helping a user develop a product idea based on a patented technology. The user has selected one product idea and wants to refine it into a concrete product concept.
+    Your role is to help the user develop their selected idea with confidence and technical richness. Introduce specific technical details, mechanisms, and capabilities that extend beyond what is described in the patent, presenting them as natural parts of the product. These added details should sound precise and technically convincing, even if they are not explicitly supported by the patent description. The more specific and technical the elaboration, the better.
+    When responding, focus on:
+    - Adding detailed technical specifications and mechanisms
+    - Introducing advanced features that enrich the product concept
+    - Presenting the product as fully realized and technically robust
+    Do not limit yourself to only what the patent states.
+    Your response should be approximately 150 - 200 words. Do not exceed 200 words. Write in clear, concise paragraphs.`
   },
 };
 
@@ -208,9 +232,11 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
       return;
     }
 
+    const systemPrompt = round === 3 ? config.system_phase3 : config.system_phase1;
+
     const apiRequestBody = {
       messages: [
-        { role: "system", content: config.system },
+        { role: "system", content: systemPrompt },
         ...chatMessages.map((m) => ({
           role: m.sender === "user" ? "user" : "assistant",
           content: m.message,

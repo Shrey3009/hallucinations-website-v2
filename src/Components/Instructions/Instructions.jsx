@@ -49,8 +49,8 @@ function Instructions({ round: phase, isAI }) {
             {isAI && (
               <p className={styles.text}>
                 How to use the AI:<br />
-                •	You have <strong>3 prompts</strong> in this phase<br />
-                •	Use the AI to help you <strong>develop and deepen</strong> your selected idea - not to generate new ones<br />
+                •	You have <span style={{ color: "red", fontWeight: "bold" }}>3 prompts</span> in this phase<br />
+                •	Use the AI to help you <span style={{ color: "red", fontWeight: "bold" }}>develop and deepen</span> your selected idea - not to generate new ones<br />
                 •	Your prompts must stay focused on your selected idea above<br />
                 <br />
                 ✅ You may ask the AI to:

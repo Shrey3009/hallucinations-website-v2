@@ -2,9 +2,19 @@ import React, { useEffect } from "react";
 import styles from "./ThankYou.module.css";
 
 function ThankYou() {
-  // Scroll to top when component mounts
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const surveyCode = sessionStorage.getItem("survey_code");
+
+    if (surveyCode) {
+      const sonaCompletionURL =
+        "https://gmubus.sona-systems.com/webstudy_credit.aspx?experiment_id=139&credit_token=d23500664b804674947a1736420a7e3b&survey_code=" +
+        encodeURIComponent(surveyCode);
+
+      window.location.href = sonaCompletionURL;
+    } else {
+      // For NON-SONA participants
+      window.scrollTo(0, 0);
+    }
   }, []);
 
   return (

@@ -10,6 +10,7 @@ function SurveyForm() {
     race: "",
     experience: "",
     designExperience: "",
+    surveyCode: sessionStorage.getItem("survey_code") || null,
   });
 
   const [errors, setErrors] = useState({});

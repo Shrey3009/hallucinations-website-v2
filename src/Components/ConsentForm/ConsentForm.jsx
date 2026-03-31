@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./ConsentForm.module.css";
 import logo from "../../assets/Web-Logo-Costello-College-of-Business.png";
@@ -7,6 +7,15 @@ function ConsentForm() {
   const [consent, setConsent] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const surveyCode = params.get("survey_code");
+
+    if (surveyCode) {
+      sessionStorage.setItem("survey_code", surveyCode);
+    }
+  }, []);
 
   const handleConsentChange = (e) => {
     setConsent(e.target.value);

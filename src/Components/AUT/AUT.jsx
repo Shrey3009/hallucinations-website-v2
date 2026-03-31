@@ -227,7 +227,7 @@ function AUT() {
                     <div key={index} className={styles.inputWrapper}>
                       <input
                         type="text"
-                        placeholder={`Application Idea ${index + 1}`}
+                        placeholder={`Product Idea ${index + 1}`}
                         value={idea}
                         onChange={(e) => handleIdeaChange(index, e.target.value)}
                         className={styles.inputField}
