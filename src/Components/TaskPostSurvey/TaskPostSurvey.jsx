@@ -71,8 +71,11 @@ function TaskPostSurvey() {
                 return;
             }
 
+            const apiUrlEnv = import.meta.env.VITE_NODE_API || "";
+            const baseApi = apiUrlEnv.endsWith('/') ? apiUrlEnv.slice(0, -1) : apiUrlEnv;
+
             const response = await fetch(
-                `${import.meta.env.VITE_NODE_API}/api/TaskPostSurvey`,
+                `${baseApi}/api/TaskPostSurvey`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
