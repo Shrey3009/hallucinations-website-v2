@@ -171,7 +171,7 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
   useEffect(() => {
     const scrollTimeout = setTimeout(() => {
       if (scrollRef.current) {
-        scrollRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+        scrollRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }, 100); // 100ms delay to allow DOM to finish rendering large messages
     return () => clearTimeout(scrollTimeout);

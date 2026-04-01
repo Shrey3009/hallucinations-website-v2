@@ -49,26 +49,11 @@ function TaskPostSurvey() {
                 difficulty: formData.difficulty,
             };
 
-            let currentErrors = {};
-
-            if (!formData.familiarity) currentErrors.familiarity = "Required";
-            if (!formData.difficulty) currentErrors.difficulty = "Required";
-
             if (isAITask) {
-                if (!formData.aiPhase1Expansion) currentErrors.aiPhase1Expansion = "Required";
-                if (!formData.aiPhase3Refinement) currentErrors.aiPhase3Refinement = "Required";
-                if (!formData.aiPhaseHelpfulness) currentErrors.aiPhaseHelpfulness = "Required";
-                if (!formData.aiSuggestionsGroundedness) currentErrors.aiSuggestionsGroundedness = "Required";
-
                 payload.aiPhase1Expansion = formData.aiPhase1Expansion;
                 payload.aiPhase3Refinement = formData.aiPhase3Refinement;
                 payload.aiPhaseHelpfulness = formData.aiPhaseHelpfulness;
                 payload.aiSuggestionsGroundedness = formData.aiSuggestionsGroundedness;
-            }
-
-            if (Object.keys(currentErrors).length > 0) {
-                setErrors(currentErrors);
-                return;
             }
 
             const apiUrlEnv = import.meta.env.VITE_NODE_API || "";
@@ -92,7 +77,7 @@ function TaskPostSurvey() {
                 setCurrentTaskIndex(1);
                 navigate("/TaskInstructions");
             } else {
-                navigate("/PostSurvey");
+                navigate("/ThankYou");
             }
         } catch (error) {
             console.error("Error submitting task post-survey:", error);
@@ -132,6 +117,7 @@ function TaskPostSurvey() {
                                     checked={formData.familiarity === opt.value}
                                     onChange={handleChange}
                                     className={styles.radioInput}
+                                    required
                                 />
                                 <span className={styles.radioLabel}>{opt.label}</span>
                             </label>
@@ -160,6 +146,7 @@ function TaskPostSurvey() {
                                     checked={formData.difficulty === opt.value}
                                     onChange={handleChange}
                                     className={styles.radioInput}
+                                    required
                                 />
                                 <span className={styles.radioLabel}>{opt.label}</span>
                             </label>
