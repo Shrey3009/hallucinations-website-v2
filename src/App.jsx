@@ -11,6 +11,7 @@ import ThankYou from "./Components/ThankYou/ThankYou";
 
 
 import TaskInstructions from "./Components/Instructions/TaskInstructions";
+import TaskPostSurvey from "./Components/TaskPostSurvey/TaskPostSurvey";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/TaskInstructions" element={<TaskInstructions />} />
         <Route path="/AUT" element={<AUT />} />
         <Route path="/AUT_gpt" element={<AUT_gpt />} />
+        <Route path="/TaskPostSurvey" element={<TaskPostSurvey />} />
         <Route path="/Chatbot" element={<Chatbot />} />
         <Route path="/PostSurvey" element={<PostSurvey />} />
         <Route path="/WelcomePage" element={<WelcomePage />} />

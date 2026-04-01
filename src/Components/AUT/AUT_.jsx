@@ -117,15 +117,7 @@ function AUT({ round, onStateChange, task, randomString, temperature }) {
       });
 
       if (response.ok) {
-        if (currentTaskIndex === 0) {
-          // Transition to Task 2 Instructions
-          setCurrentTaskIndex(1);
-          window.scrollTo(0, 0);
-          navigate("/TaskInstructions");
-        } else {
-          // Transition to final PostSurvey
-          navigate("/PostSurvey");
-        }
+        navigate("/TaskPostSurvey");
       } else {
         alert("Failed to submit form");
         setIsSubmitting(false);
