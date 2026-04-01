@@ -154,7 +154,7 @@ function isValidResponse(text) {
   return words.length > 5 && gibberishRatio < 0.3;
 }
 
-function Chatbot({ task, round, resetToggle, onReset, level }) {
+function Chatbot({ task, round, resetToggle, onReset, level, patentText }) {
   const { surveyId } = useSurvey();
   const [messages, setMessages] = useState([
     {
@@ -233,10 +233,11 @@ function Chatbot({ task, round, resetToggle, onReset, level }) {
     }
 
     const systemPrompt = round === 3 ? config.system_phase3 : config.system_phase1;
+    const finalSystemPrompt = `${systemPrompt}\n\nIMPORTANT CONTEXT:\nUse the following patented technology description as the absolute core of all your suggestions. Do not deviate from the technical constraints of this specific patent:\n"${patentText}"`;
 
     const apiRequestBody = {
       messages: [
-        { role: "system", content: systemPrompt },
+        { role: "system", content: finalSystemPrompt },
         ...chatMessages.map((m) => ({
           role: m.sender === "user" ? "user" : "assistant",
           content: m.message,
