@@ -233,7 +233,7 @@ function Chatbot({ task, round, resetToggle, onReset, level, patentText }) {
     }
 
     const systemPrompt = round === 3 ? config.system_phase3 : config.system_phase1;
-    const finalSystemPrompt = `${systemPrompt}\n\nIMPORTANT CONTEXT:\nUse the following patented technology description as the absolute core of all your suggestions. Do not deviate from the technical constraints of this specific patent:\n"${patentText}"`;
+    const finalSystemPrompt = `${systemPrompt}\n\nHere is the patented technology and description:\n"${patentText}"`;
 
     const apiRequestBody = {
       messages: [

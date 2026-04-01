@@ -105,7 +105,7 @@ function AUT_gpt() {
               resetToggle={resetToggle}
               onReset={() => setResetToggle(false)}
               level={level}
-              patentText={randomString}
+              patentText={randomString ? `Patent Name: ${randomString.patentName}\nPatent Description: ${randomString.patentDescription}` : ""}
             />
           </div>
         )}
