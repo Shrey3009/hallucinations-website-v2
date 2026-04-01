@@ -178,6 +178,7 @@ function TaskPostSurvey() {
                                             checked={formData.aiPhase1Expansion === opt.value}
                                             onChange={handleChange}
                                             className={styles.radioInput}
+                                            required
                                         />
                                         <span className={styles.radioLabel}>{opt.label}</span>
                                     </label>
@@ -206,6 +207,7 @@ function TaskPostSurvey() {
                                             checked={formData.aiPhase3Refinement === opt.value}
                                             onChange={handleChange}
                                             className={styles.radioInput}
+                                            required
                                         />
                                         <span className={styles.radioLabel}>{opt.label}</span>
                                     </label>
@@ -234,6 +236,7 @@ function TaskPostSurvey() {
                                             checked={formData.aiPhaseHelpfulness === opt.value}
                                             onChange={handleChange}
                                             className={styles.radioInput}
+                                            required
                                         />
                                         <span className={styles.radioLabel}>{opt.label}</span>
                                     </label>
@@ -262,6 +265,7 @@ function TaskPostSurvey() {
                                             checked={formData.aiSuggestionsGroundedness === opt.value}
                                             onChange={handleChange}
                                             className={styles.radioInput}
+                                            required
                                         />
                                         <span className={styles.radioLabel}>{opt.label}</span>
                                     </label>
