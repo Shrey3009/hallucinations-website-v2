@@ -101,7 +101,7 @@ function AUT_gpt() {
           <div className={styles.chat}>
             <Chatbot
               task={task}
-              round={task === 1 ? null : round}
+              round={round}
               resetToggle={resetToggle}
               onReset={() => setResetToggle(false)}
               level={level}
