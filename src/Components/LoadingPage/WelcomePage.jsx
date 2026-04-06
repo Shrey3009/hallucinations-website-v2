@@ -28,7 +28,7 @@ function WelcomePage() {
 
         <h2 className={styles.sectionTitle}>Important Instructions for This Study</h2>
 
-        <p className={styles.text}>
+        <p className={styles.leftText}>
           During this study, please complete all tasks using <span className={styles.boldRedText}>ONLY</span> the materials and AI tools provided within the study environment. To ensure the validity of the research results, you must <span className={styles.boldRedText}>NOT</span> use any outside assistance while participating, including but not limited to:
         </p>
 
@@ -43,12 +43,12 @@ function WelcomePage() {
           ⚠️ Your course credit is contingent upon carefully following all study instructions. If the use of any outside tools or resources is detected during the study, your participation will be considered invalid and you will not receive course credit.
         </p>
 
-        <p className={styles.text}>
+        <p className={styles.leftText}>
           Please remain focused on the study window and complete the tasks independently from start to finish.
         </p>
 
         <div className={styles.leftAlign}>
-          <p className={styles.text} style={{ fontWeight: "700", marginBottom: "10px" }}>By continuing, you confirm that:</p>
+          <p className={styles.leftText} style={{ fontWeight: "700", marginBottom: "10px" }}>By continuing, you confirm that:</p>
           <ul className={styles.list} style={{ margin: "0" }}>
             <li>You will use only the tools and information provided in this study.</li>
             <li>You will not consult any outside AI tools, websites, or other resources.</li>
